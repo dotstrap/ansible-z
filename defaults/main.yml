@@ -1,0 +1,13 @@
+---
+
+install_state: present
+configuration_state: present
+
+dotstrap_config_dir: "{{ ansible_user_dir }}/.config/dotstrap"
+
+z_cmd: j
+
+z_marker: "#####=== {mark} Ansible managed z settings ===#####"
+
+# TODO: should the z db file default to $XDG_DATA_HOME or $XDG_CACHE_HOME?
+z_data_path: "{{ xdg_data_home }}/z/z_data"

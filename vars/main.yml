@@ -1,0 +1,7 @@
+---
+
+default_xdg_data_home: "{{ ansible_user_dir }}/.local/share"
+xdg_data_home: "{{ ansible_env.XDG_DATA_HOME | default(default_xdg_data_home) }}"
+
+default_xdg_cache_home: "{{ ansible_user_dir }}/.cache"
+xdg_cache_home: "{{ ansible_env.XDG_CACHE_HOME | default(default_xdg_cache_home) }}"
