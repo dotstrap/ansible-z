@@ -2,7 +2,7 @@
 
 galaxy_info:
   author: mkwmms
-  description: "Install & configure z."
+  description: Install & configure z
   license: GPLv3
   min_ansible_version: 2.0
   platforms:
@@ -16,6 +16,6 @@ galaxy_info:
         - any
   galaxy_tags:
     - dotfiles
-    - dotstrap
+    - z
 
 dependencies: []

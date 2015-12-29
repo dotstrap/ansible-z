@@ -3,42 +3,15 @@
 #####=== install ===#####
 
 - block:
-    - name: bash/sh/zsh | setup | dotstrap directory
-      file: dest="{{ dotstrap_config_dir }}/rupa/z" state=directory
+    - name: bash/zsh | setup | dotstrap directory
+      file: dest="{{ config_dir }}/z" state=directory
 
-    - name: bash/sh/zsh | install
+    - name: bash/zsh | install
       get_url:
         url: https://raw.githubusercontent.com/rupa/z/master/z.sh
-        dest: "{{ dotstrap_config_dir }}/rupa/z/z.sh"
+        dest: "{{ config_dir }}/z/z.sh"
         force: yes
-  when: ansible_user_shell | match(".*\/(bash|zsh|/sh)")
-  tags:
-    - bootstrap
-    - install
-    - update
-
-# FIXME: synchronize module does not work
-# there are permissions issues...
-# - name: fish | install
-  # synchronize:
-    # src: "{{ item }}"
-    # dest: "{{ ansible_user_dir }}/.config/fish"
-    # compress: no
-    # archive: no
-    # dirs: no
-  # with_items:
-    # - completions
-    # - functions
-
-- block:
-    - name: fish | install functions
-      copy: src="{{ item }}" dest="{{ ansible_user_dir }}/.config/fish/functions"
-      with_fileglob: functions/*
-
-    - name: fish | install completions
-      copy: src="{{ item }}" dest="{{ ansible_user_dir }}/.config/fish/completions"
-      with_fileglob: completions/*
-  when: ansible_user_shell | match(".*\/fish")
+  when: ansible_user_shell | match(".*\/(bash|zsh)")
   tags:
     - bootstrap
     - install
@@ -48,25 +21,25 @@
 
 - name: setup | data file directory
   file: dest="{{ z_data_path | dirname }}" state=directory
-  when: ansible_user_shell | match(".*\/(fish|bash|zsh|/sh)")
+  when: ansible_user_shell | match(".*\/(bash|zsh|fish)")
   tags:
     - bootstrap
     - configure
     - update
 
 - block:
-    - name: bash/sh/zsh | configure
+    - name: bash/zsh | configure
       blockinfile:
-        dest: "{{ dotstrap_config_dir }}/config.{{ ansible_user_shell | basename }}"
+        dest: "{{ shell_profile }}"
         create: yes
         backup: no
         state: "{{ configuration_state }}"
         marker: "{{ z_marker }}"
         block: |
-          source "{{ dotstrap_config_dir }}/rupa/z/z.sh"
+          source "{{ config_dir }}/z/z.sh"
           export _Z_DATA="{{ z_data_path }}"
           export _Z_CMD="{{ z_cmd }}"
-  when: ansible_user_shell | match(".*\/(bash|zsh|/sh)")
+  when: ansible_user_shell | match(".*\/(bash|zsh)")
   tags:
     - bootstrap
     - configure
@@ -79,6 +52,14 @@
       with_items:
         - completions
         - functions
+
+    - name: fish | install functions
+      copy: src="{{ item }}" dest="{{ ansible_user_dir }}/.config/fish/functions"
+      with_fileglob: functions/*
+
+    - name: fish | install completions
+      copy: src="{{ item }}" dest="{{ ansible_user_dir }}/.config/fish/completions"
+      with_fileglob: completions/*
 
     # TODO: how to handle when fish_prompt does not exist?
     - name: fish | configure | fish_prompt

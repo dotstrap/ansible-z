@@ -1,8 +1,8 @@
-dotstrap-z
+z
 ==================
-<!-- [![Build Status](https://travis-ci.org/mkwmms/ansible-dotstrap-z.svg)](https://travis-ci.org/mkwmms/dotstrap-z) -->
+<!-- [![Build Status](https://travis-ci.org/mkwmms/ansible-z.svg)](https://travis-ci.org/mkwmms/z) -->
 
-Install & configure [z].
+Install & configure [z]
 
 Requirements
 ------------
