@@ -1,15 +1,34 @@
 ---
 
-ansible_user_shell_name: "{{ ansible_user_shell | basename }}"
+#####=== XDG variables ===#####
 
-bash_profile: "{{ ansible_user_dir }}/.bash_profile"
-zsh_profile: "{{ ansible_user_dir }}/.zshrc"
-
-default_xdg_config_home: "{{ ansible_user_dir }}/.config"
-xdg_config_home: "{{ ansible_env.XDG_CONFIG_HOME | default(default_xdg_config_home) }}"
+# default_xdg_config_home: "{{ ansible_user_dir }}/.config"
+# xdg_config_home: "{{ ansible_env.XDG_CONFIG_HOME | default(default_xdg_config_home) }}"
 
 default_xdg_data_home: "{{ ansible_user_dir }}/.local/share"
 xdg_data_home: "{{ ansible_env.XDG_DATA_HOME | default(default_xdg_data_home) }}"
 
-default_xdg_cache_home: "{{ ansible_user_dir }}/.cache"
-xdg_cache_home: "{{ ansible_env.XDG_CACHE_HOME | default(default_xdg_cache_home) }}"
+# default_xdg_cache_home: "{{ ansible_user_dir }}/.cache"
+# xdg_cache_home: "{{ ansible_env.XDG_CACHE_HOME | default(default_xdg_cache_home) }}"
+
+#####=== shell variables ===#####
+
+bash_data_dir: "{{ xdg_data_home }}/bash"
+fish_data_dir: "{{ ansible_user_dir }}/.config/fish"
+zsh_data_dir: "{{ xdg_data_home }}/zsh"
+
+bash_config_file: "{{ ansible_user_dir }}/.bash_profile"
+fish_config_file: "{{ ansible_user_dir }}/.config/fish/config.fish"
+zsh_config_file: "{{ ansible_user_dir }}/.zshrc"
+
+#####=== z variables ===#####
+
+z_config_block: |
+  source "{{ z_data_dir }}/z.sh"
+  export _Z_DATA="{{ z_data_file }}"
+  export _Z_CMD="{{ z_cmd }}"
+
+z_repo_url: "https://raw.githubusercontent.com/rupa/z/master"
+
+z_repo_files:
+  - name: "z.sh"

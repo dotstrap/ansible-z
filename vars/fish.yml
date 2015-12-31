@@ -1,0 +1,5 @@
+---
+
+z_data_dir: "{{ shell_data_dir | default(fish_data_dir) }}"
+
+z_config_file: "{{ shell_config_file | default(fish_config_file) }}"

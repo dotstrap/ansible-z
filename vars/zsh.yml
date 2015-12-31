@@ -1,0 +1,8 @@
+---
+
+z_config_file: "{{ shell_config_file | default(zsh_config_file) }}"
+
+z_data_dir: "{{ shell_data_dir | default(zsh_data_dir) }}/functions"
+
+# The installation file path for z.sh
+# z_dest_file: "{{ shell_data_dir | default(zsh_data_dir) }}/functions/z.sh"

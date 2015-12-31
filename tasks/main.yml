@@ -1,16 +1,20 @@
 ---
 
+- name: setup
+  include_vars: "{{ ansible_user_shell | basename }}.yml"
+
 #####=== install ===#####
 
 - block:
-    - name: bash/zsh | setup | dotstrap directory
-      file: dest="{{ config_dir }}/z" state=directory
+  - name: bash/zsh | setup | installation directory
+    file: path="{{ z_data_dir }}" state=directory follow=yes
 
-    - name: bash/zsh | install
-      get_url:
-        url: https://raw.githubusercontent.com/rupa/z/master/z.sh
-        dest: "{{ config_dir }}/z/z.sh"
-        force: yes
+  - name: bash/zsh | install
+    get_url:
+      url: "{{ z_repo_url }}/{{ item.name }}"
+      dest: "{{ z_data_dir }}/{{ item.dest | default(item.name) }}"
+      force: yes
+    with_items: "{{ z_repo_files }}"
   when: ansible_user_shell | match(".*\/(bash|zsh)")
   tags:
     - bootstrap
@@ -20,51 +24,52 @@
 #####=== configure ===#####
 
 - name: setup | data file directory
-  file: dest="{{ z_data_path | dirname }}" state=directory
+  file: dest="{{ z_data_file | dirname }}" state=directory
   when: ansible_user_shell | match(".*\/(bash|zsh|fish)")
   tags:
     - bootstrap
     - configure
-    - update
 
-- block:
-    - name: bash/zsh | configure
-      blockinfile:
-        dest: "{{ shell_profile }}"
-        create: yes
-        backup: no
-        state: "{{ configuration_state }}"
-        marker: "{{ z_marker }}"
-        block: |
-          source "{{ config_dir }}/z/z.sh"
-          export _Z_DATA="{{ z_data_path }}"
-          export _Z_CMD="{{ z_cmd }}"
+- name: bash/zsh | configure | shell initialization
+  blockinfile:
+    dest: "{{ z_config_file }}"
+    create: yes
+    backup: no
+    state: "{{ z_configure_state }}"
+    marker: "{{ z_marker }}"
+    block: "{{ z_config_block }}"
+  # when: z_config_block is defined
   when: ansible_user_shell | match(".*\/(bash|zsh)")
   tags:
     - bootstrap
     - configure
-    - update
 
 - block:
-      # fish hardcodes ~/.config/fish so no need to check $XDG_CONFIG_HOME
     - name: fish | setup | directories
-      file: dest="{{ ansible_user_dir }}/.config/fish/{{ item }}" state=directory
+      file: dest="{{ fish_data_dir }}/{{ item }}" state=directory follow=yes
       with_items:
         - completions
         - functions
 
-    - name: fish | install functions
-      copy: src="{{ item }}" dest="{{ ansible_user_dir }}/.config/fish/functions"
-      with_fileglob: functions/*
+    - name: fish | configure | functions
+      template:
+        src: "fish/functions/{{ item.name }}.j2"
+        dest: "{{ fish_data_dir }}/functions/{{ item.dest | default(item.name) }}.fish"
+        force: yes
+        backup: no
+      with_items:
+        - name: z
+        - name: z_cmd
+          dest: "{{ z_cmd }}"
 
-    - name: fish | install completions
-      copy: src="{{ item }}" dest="{{ ansible_user_dir }}/.config/fish/completions"
-      with_fileglob: completions/*
+    - name: fish | configure | completions
+      copy: src="{{ item }}" dest="{{ fish_data_dir }}/completions"
+      with_fileglob: "fish/completions/*"
 
     # TODO: how to handle when fish_prompt does not exist?
     - name: fish | configure | fish_prompt
       blockinfile:
-        dest: "{{ ansible_user_dir }}/.config/fish/functions/fish_prompt.fish"
+        dest: "{{ fish_data_dir }}/functions/fish_prompt.fish"
         create: yes
         backup: no
         state: "{{ configuration_state }}"
@@ -73,10 +78,10 @@
         block: |
           z --add "$PWD"
 
-    - name: fish | configure | _Z_DATA & _Z_CMD
-      command: fish -c "set -U _Z_DATA {{ z_data_path }}; set -U _Z_CMD {{ z_cmd }}"
+    - name: fish | configure | $_Z_DATA
+      # command: fish -c "set -U _Z_DATA {{ z_data_file }}; set -U _Z_CMD {{ z_cmd }}"
+      command: fish -c "set -U _Z_DATA {{ z_data_file }}"
   when: ansible_user_shell | match(".*\/fish")
   tags:
     - bootstrap
     - configure
-    - update
