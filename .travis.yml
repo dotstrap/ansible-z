@@ -24,17 +24,19 @@ install:
 script:
   # Basic role syntax check
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+
   # Run the role
   - ansible-playbook tests/test.yml -i tests/inventory --connection=local -vvv
-  - cat $HOME/.bash_profile
+
   # Do a simple check to see if we wrote the correct settings
-  # - grep -E '^source.*\.config/bash/z/z.sh"$' $HOME/.bash_profile
+  - grep -E '^source.*\.local/share/bash/functions/z.sh"$' $HOME/.bash_profile
+
   # Run the role again, checking to make sure it's idempotent
-  - >
-    ansible-playbook tests/test.yml -i tests/inventory --connection=local
-    | grep -q 'changed=0.*failed=0'
-    && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail' && exit 1)
+  # - >
+    # ansible-playbook tests/test.yml -i tests/inventory --connection=local
+    # | grep -q 'changed=0.*failed=0'
+    # && (echo 'Idempotence test: pass' && exit 0)
+    # || (echo 'Idempotence test: fail' && exit 1)
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
