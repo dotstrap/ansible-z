@@ -1,6 +1,6 @@
 ansible-z
 =========
-<!-- [![Build Status](https://travis-ci.org/mkwmms/ansible-z.svg)](https://travis-ci.org/mkwmms/z) -->
+[![Build Status](https://travis-ci.org/mkwmms/ansible-z.svg?branch=master)](https://travis-ci.org/mkwmms/ansible-z)
 
 Install & configure [z] for [bash], [zsh] & [fish] shells.
 
