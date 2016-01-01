@@ -26,9 +26,11 @@ script:
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
   # Run the role
   - ansible-playbook tests/test.yml -i tests/inventory --connection=local -vv
+  # Do a simple check to see if we wrote the correct settings
+  - grep -E '^source.*\.config/bash/z/z.sh"$' $HOME/.bash_profile
   # Run the role again, checking to make sure it's idempotent
   - >
-    ansible-playbook tests/test.yml -i tests/inventory --connection=local -vv
+    ansible-playbook tests/test.yml -i tests/inventory --connection=local
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
