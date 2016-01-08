@@ -35,4 +35,4 @@ z_configure_state: "{{ configure_state }}"
 
 # The marker line (which surrounds the text block) template.
 # "{mark}" will be replaced with "BEGIN" or "END".
-z_marker: "#####=== {mark} Ansible managed z-prompt settings ===#####"
+z_marker: "#####=== {mark} Ansible managed z settings ===#####"
