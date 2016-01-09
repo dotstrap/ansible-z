@@ -4,6 +4,13 @@ ansible-z
 
 Install & configure [z] for [bash], [zsh] & [fish] shells.
 
+Installation
+------------
+
+```
+ansible-galaxy install mkwmms.z
+```
+
 Requirements
 ------------
 
@@ -23,9 +30,9 @@ Example Playbook
 ----------------
 
 ```
-    - hosts: servers
+    - hosts: all
       roles:
-         - { role: mkwmms.z }
+         - role: mkwmms.z
 ```
 
 Notes
