@@ -79,8 +79,8 @@
           z --add "$PWD"
 
     - name: fish | configure | $_Z_DATA
-      # command: fish -c "set -U _Z_DATA {{ z_data_file }}; set -U _Z_CMD {{ z_cmd }}"
-      command: fish -c "set -U _Z_DATA {{ z_data_file }}"
+      # command: fish -c "set -Ux _Z_DATA {{ z_data_file }}; set -Ux _Z_CMD {{ z_cmd }}"
+      command: fish -c "set -Ux _Z_DATA {{ z_data_file }}"
   when: ansible_user_shell | match(".*\/fish")
   tags:
     - bootstrap
