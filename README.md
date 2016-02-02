@@ -1,6 +1,6 @@
 ansible-z
 =========
-[![Build Status](https://travis-ci.org/mkwmms/ansible-z.svg?branch=master)](https://travis-ci.org/mkwmms/ansible-z)
+[![Build Status](https://travis-ci.org/mwilliammyers/ansible-z.svg?branch=master)](https://travis-ci.org/mwilliammyers/ansible-z)
 
 Install & configure [z] for [bash], [zsh] & [fish] shells.
 
@@ -8,7 +8,7 @@ Installation
 ------------
 
 ```
-ansible-galaxy install mkwmms.z
+ansible-galaxy install mwilliammyers.z
 ```
 
 Requirements
@@ -32,7 +32,7 @@ Example Playbook
 ```
     - hosts: all
       roles:
-         - role: mkwmms.z
+         - role: mwilliammyers.z
 ```
 
 Notes
@@ -49,13 +49,13 @@ GPLv3
 Author Information
 ------------------
 
-[@mkwmms]
+[@mwilliammyers]
 
-[@mkwmms]: https://github.com/mkwmms
+[@mwilliammyers]: https://github.com/mwilliammyers
 [aura]: https://github.com/aurapm/aura
 [bash]: https://www.gnu.org/software/bash/manual/bashref.html
 [default variables]: defaults/main.yml
-[dotstrap]: https://github.com/mkwmms/dotstrap
+[dotstrap]: https://github.com/mwilliammyers/dotstrap
 [fasd]: https://github.com/clvv/fasd
 [files]: files/
 [fish]: http://fishshell.com/
