@@ -51,7 +51,7 @@
         - completions
         - functions
 
-    - name: fish | configure | functions
+    - name: fish | install | functions
       template:
         src: "fish/functions/{{ item.name }}.j2"
         dest: "{{ fish_data_dir }}/functions/{{ item.dest | default(item.name) }}.fish"
@@ -62,12 +62,12 @@
         - name: z_cmd
           dest: "{{ z_cmd }}"
 
-    - name: fish | configure | completions
+    - name: fish | install | completions
       copy: src="{{ item }}" dest="{{ fish_data_dir }}/completions"
       with_fileglob: "fish/completions/*"
 
     # TODO: how to handle when fish_prompt does not exist?
-    - name: fish | configure | fish_prompt
+    - name: fish | install | fish_prompt
       blockinfile:
         dest: "{{ fish_data_dir }}/functions/fish_prompt.fish"
         create: yes
@@ -77,10 +77,15 @@
         insertafter: function fish_prompt
         block: |
           z --add "$PWD"
+  when: ansible_user_shell | match(".*\/fish")
+  tags:
+    - bootstrap
+    - install
 
-    - name: fish | configure | $_Z_DATA
-      # command: fish -c "set -Ux _Z_DATA {{ z_data_file }}; set -Ux _Z_CMD {{ z_cmd }}"
-      command: fish -c "set -Ux _Z_DATA {{ z_data_file }}"
+# Compatability with original rupa/z and fishery/fish-z
+- block:
+    - name: fish | configure | $Z_DATA, $Z_CMD
+      command: fish -c "set -Ux Z_DATA {{ z_data_file }}; set -Ux _Z_DATA {{ z_data_file }}; set -Ux Z_CMD {{ z_cmd }}; set -Ux _Z_CMD {{ z_cmd }}"
   when: ansible_user_shell | match(".*\/fish")
   tags:
     - bootstrap
