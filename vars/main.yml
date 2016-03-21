@@ -25,7 +25,9 @@ zsh_config_file: "{{ ansible_user_dir }}/.zshrc"
 
 z_config_block: |
   export _Z_DATA="{{ z_data_file }}"
+  export Z_DATA="{{ z_data_file }}"
   export _Z_CMD="{{ z_cmd }}"
+  export Z_CMD="{{ z_cmd }}"
   source "{{ z_data_dir }}/z.sh"
 
 z_repo_url: "https://raw.githubusercontent.com/rupa/z/master"
