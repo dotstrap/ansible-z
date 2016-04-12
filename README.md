@@ -1,6 +1,6 @@
 ansible-z
 =========
-[![Build Status](https://travis-ci.org/mwilliammyers/ansible-z.svg?branch=master)](https://travis-ci.org/mwilliammyers/ansible-z)
+[![Build Status](https://travis-ci.org/dotstrap/ansible-z.svg?branch=master)](https://travis-ci.org/dotstrap/ansible-z)
 
 Install & configure [z] for [bash], [zsh] & [fish] shells.
 
@@ -8,7 +8,7 @@ Installation
 ------------
 
 ```
-ansible-galaxy install mwilliammyers.z
+ansible-galaxy install dotstrap.z
 ```
 
 Requirements
@@ -32,7 +32,7 @@ Example Playbook
 ```
     - hosts: all
       roles:
-         - role: mwilliammyers.z
+         - role: dotstrap.z
 ```
 
 Notes
