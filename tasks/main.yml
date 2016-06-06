@@ -19,8 +19,11 @@
   when: ansible_user_shell | match(".*\/(bash|zsh)")
   tags:
     - bootstrap
+    - bootstrap_z
     - install
+    - install_z
     - update
+    - update_z
 
 #####=== configure ===#####
 
@@ -29,7 +32,9 @@
   when: ansible_user_shell | match(".*\/(bash|zsh|fish)")
   tags:
     - bootstrap
+    - bootstrap_z
     - configure
+    - configure_z
 
 - name: bash/zsh | configure | shell initialization
   blockinfile:
@@ -43,7 +48,9 @@
   when: ansible_user_shell | match(".*\/(bash|zsh)")
   tags:
     - bootstrap
+    - bootstrap_z
     - configure
+    - configure_z
 
 - block:
     - name: fish | setup | directories
@@ -81,7 +88,9 @@
   when: ansible_user_shell | match(".*\/fish")
   tags:
     - bootstrap
+    - bootstrap_z
     - install
+    - install_z
 
 # Compatability with original rupa/z and fishery/fish-z
 - block:
@@ -90,4 +99,6 @@
   when: ansible_user_shell | match(".*\/fish")
   tags:
     - bootstrap
+    - bootstrap_z
     - configure
+    - configure_z
